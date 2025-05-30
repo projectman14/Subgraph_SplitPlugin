@@ -1,0 +1,8 @@
+{
+  "sepolia": {
+    "SplitPlugin": {
+      "address": "0xa73840181f066Da4D17AAee5bf932d2B5b97d54b",
+      "startBlock": 8068852
+    }
+  }
+}

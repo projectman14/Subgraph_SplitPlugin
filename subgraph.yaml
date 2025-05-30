@@ -1,0 +1,48 @@
+specVersion: 1.3.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: SplitPlugin
+    network: sepolia
+    source:
+      address: "0xa73840181f066Da4D17AAee5bf932d2B5b97d54b"
+      abi: SplitPlugin
+      startBlock: 8068852
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - User
+        - SplitConfig
+        - SplitRecipient
+        - SplitExecution
+        - RecipientPayout
+        - FailedSplitExecution
+        - SplitConfigUpdate
+        - AutomationToggle
+        - SplitConfigDeletion
+        - GlobalStats
+      abis:
+        - name: SplitPlugin
+          file: ./abis/SplitPlugin.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      callHandlers:
+        - function: updateSplitConfig(uint256,address[],uint32[])
+          handler: handleSplitConfigUpdated
+      eventHandlers:
+        - event: AutomationSwitched(indexed uint256,bool)
+          handler: handleAutomationSwitched
+        - event: SplitConfigCreated(indexed address,indexed uint256)
+          handler: handleSplitConfigCreated
+        - event: SplitConfigDeleted(indexed uint256)
+          handler: handleSplitConfigDeleted
+        - event: SplitConfigFailed(indexed uint256,bytes)
+          handler: handleSplitConfigFailed
+        - event: SplitExecuted(indexed uint256)
+          handler: handleSplitExecuted
+      file: ./src/split-plugin.ts

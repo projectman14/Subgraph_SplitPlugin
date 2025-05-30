@@ -1,0 +1,113 @@
+type User @entity(immutable: false) {
+  id: Bytes!
+  createdAt: BigInt!
+  splitConfigs: [SplitConfig!]! @derivedFrom(field: "user")
+  totalConfigs: BigInt!
+  activeConfigs: BigInt!
+}
+
+type SplitConfig @entity(immutable: false) {
+  id: Bytes!
+  user: User!
+  configIndex: BigInt!
+  tokenAddress: Bytes!
+  minTokenAmount: BigInt!
+  isSplitEnabled : Boolean!
+  deleted: Boolean!
+  createdAt: BigInt!
+  updatedAt: BigInt!
+  createdTxHash: Bytes!
+  recipients: [SplitRecipient!]! @derivedFrom(field: "config")
+  executions: [SplitExecution!]! @derivedFrom(field: "config")
+  failedExecutions: [FailedSplitExecution!]! @derivedFrom(field: "config")
+  automationToggles: [AutomationToggle!]! @derivedFrom(field: "config")
+  updates: [SplitConfigUpdate!]! @derivedFrom(field: "config")
+  totalExecutions: BigInt!
+  totalFailedExecutions: BigInt!
+}
+
+type SplitRecipient @entity(immutable: false) {
+  id: Bytes!
+  config: SplitConfig!
+  recipient: Bytes!
+  percentage: BigInt! 
+  percentageFormatted: BigDecimal! 
+  createdAt: BigInt!
+  isActive: Boolean!
+}
+
+type SplitExecution @entity(immutable: true) {
+  id: Bytes!
+  config: SplitConfig!
+  timestamp: BigInt!
+  txHash: Bytes!
+  executor: Bytes! 
+  tokenAddress: Bytes!
+  payouts: [RecipientPayout!]! @derivedFrom(field: "execution")
+}
+
+type RecipientPayout @entity(immutable: true) {
+  id: Bytes! 
+  execution: SplitExecution!
+  recipient: Bytes!
+  percentage: BigInt!
+  tokenAddress: Bytes!
+}
+
+type FailedSplitExecution @entity(immutable: true) {
+  id: Bytes! 
+  config: SplitConfig!
+  timestamp: BigInt!
+  txHash: Bytes!
+  failureReason: Bytes!
+  failureReasonString: String 
+  executor: Bytes
+  tokenAddress: Bytes!
+}
+
+type AutomationToggle @entity(immutable: true) {
+  id: Bytes!
+  config: SplitConfig!
+  timestamp: BigInt!
+  txHash: Bytes!
+  toggledBy: Bytes!
+  previousState: Boolean!
+  newState: Boolean!
+}
+
+type SplitConfigDeletion @entity(immutable: true) {
+  id: Bytes! 
+  configIndex: BigInt!
+  user: Bytes!
+  timestamp: BigInt!
+  txHash: Bytes!
+  deletedBy: Bytes!
+  tokenAddress: Bytes!
+  recipientCount: BigInt!
+  totalExecutions: BigInt!
+  totalFailures: BigInt!
+}
+
+type SplitConfigUpdate @entity(immutable: true) {
+  id: Bytes! 
+  config: SplitConfig!
+  updatedBy: Bytes!
+  timestamp: BigInt!
+  txHash: Bytes!
+  oldRecipients: [Bytes!]!
+  oldPercentages: [BigInt!]!
+  newRecipients: [Bytes!]!
+  newPercentages: [BigInt!]!
+  minTokenAmount: BigInt!
+}
+
+type GlobalStats @entity(immutable: false) {
+  id: Bytes! 
+  totalUsers: BigInt!
+  totalConfigs: BigInt!
+  totalActiveConfigs: BigInt!
+  totalDeletedConfigs: BigInt!
+  totalExecutions: BigInt!
+  totalFailedExecutions: BigInt!
+  lastUpdated: BigInt!
+}

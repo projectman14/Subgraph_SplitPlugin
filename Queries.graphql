@@ -1,0 +1,100 @@
+query GetUserWithConfigs($userId: Bytes!) {
+  user(id: $userId) {
+    id
+    createdAt
+    totalConfigs
+    activeConfigs
+    splitConfigs {
+      id
+      tokenAddress
+      isSplitEnabled
+      createdAt
+      totalExecutions
+    }
+  }
+}
+
+query GetConfigRecipients($configId: Bytes!) {
+  splitConfig(id: $configId) {
+    id
+    recipients {
+      id
+      recipient
+      percentage
+      percentageFormatted
+      isActive
+    }
+  }
+}
+
+query GetConfigExecutions(
+  $configId: Bytes!
+  $first: Int = 10
+  $skip: Int = 0
+) {
+  splitConfig(id: $configId) {
+    id
+    executions(first: $first, skip: $skip, orderBy: timestamp, orderDirection: desc) {
+      id
+      timestamp
+      txHash
+      executor
+      payouts {
+        recipient
+        percentage
+      }
+    }
+    totalExecutions
+  }
+}
+
+query GetFailedExecutions($configId: Bytes!) {
+  splitConfig(id: $configId) {
+    id
+    failedExecutions(orderBy: timestamp, orderDirection: desc) {
+      id
+      timestamp
+      txHash
+      failureReasonString
+    }
+    totalFailedExecutions
+  }
+}
+
+query GetFullConfigDetails($configId: Bytes!) {
+  splitConfig(id: $configId) {
+    ...ConfigDetails
+    recipients {
+      ...RecipientDetails
+    }
+    executions(first: 5, orderBy: timestamp, orderDirection: desc) {
+      ...ExecutionDetails
+    }
+  }
+}
+
+fragment ConfigDetails on SplitConfig {
+  id
+  tokenAddress
+  minTokenAmount
+  isSplitEnabled
+  createdAt
+  totalExecutions
+}
+
+fragment RecipientDetails on SplitRecipient {
+  id
+  recipient
+  percentageFormatted
+  isActive
+}
+
+fragment ExecutionDetails on SplitExecution {
+  id
+  timestamp
+  txHash
+  payouts {
+    recipient
+    percentage
+  }
+}
