@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: SplitPlugin
-    network: sepolia
+    network: base-sepolia
     source:
-      address: "0xa73840181f066Da4D17AAee5bf932d2B5b97d54b"
+      address: "0xFedEC60E1314501378e3cb313A50F5AbDDbda11b"
       abi: SplitPlugin
-      startBlock: 8068852
+      startBlock: 24122798
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9

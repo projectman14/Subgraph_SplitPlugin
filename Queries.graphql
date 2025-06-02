@@ -1,3 +1,104 @@
+query GetAllUsers($first: Int = 10, $skip: Int = 0) {
+  users(first: $first, skip: $skip) {
+    id
+    createdAt
+    totalConfigs
+    activeConfigs
+
+    splitConfigs {
+      id
+      configIndex
+      tokenAddress
+      minTokenAmount
+      isSplitEnabled
+      deleted
+      createdAt
+      updatedAt
+      createdTxHash
+      totalExecutions
+      totalFailedExecutions
+    }
+  }
+}
+
+query GetAllSplitConfigs($first: Int = 10, $skip: Int = 0) {
+  splitConfigs(first: $first, skip: $skip) {
+    id
+    configIndex
+    tokenAddress
+    minTokenAmount
+    isSplitEnabled
+    deleted
+    createdAt
+    updatedAt
+    createdTxHash
+
+    user {
+      id
+      createdAt
+      totalConfigs
+      activeConfigs
+    }
+
+    recipients {
+      id
+      recipient
+      percentage
+      percentageFormatted
+      createdAt
+      isActive
+    }
+
+    executions {
+      id
+      timestamp
+      txHash
+      executor
+      tokenAddress
+      payouts {
+        id
+        recipient
+        percentage
+        tokenAddress
+      }
+    }
+
+    failedExecutions {
+      id
+      timestamp
+      txHash
+      failureReasonString
+      executor
+      tokenAddress
+    }
+
+    automationToggles {
+      id
+      timestamp
+      txHash
+      toggledBy
+      previousState
+      newState
+    }
+
+    updates {
+      id
+      updatedBy
+      timestamp
+      txHash
+      oldRecipients
+      oldPercentages
+      newRecipients
+      newPercentages
+      minTokenAmount
+    }
+
+    totalExecutions
+    totalFailedExecutions
+  }
+}
+
+
 query GetUserWithConfigs($userId: Bytes!) {
   user(id: $userId) {
     id
