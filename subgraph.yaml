@@ -31,9 +31,10 @@ dataSources:
           file: ./abis/SplitPlugin.json
         - name: ERC20
           file: ./abis/ERC20.json
-      callHandlers:
-        - function: updateSplitConfig(uint256,address[],uint32[])
-          handler: handleSplitConfigUpdated
+      # Commenting it as base-sepolia does not support call handlers yet.
+      # callHandlers: 
+      #   - function: updateSplitConfig(uint256,address[],uint32[])
+      #     handler: handleSplitConfigUpdated
       eventHandlers:
         - event: AutomationSwitched(indexed uint256,bool)
           handler: handleAutomationSwitched

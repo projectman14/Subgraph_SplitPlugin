@@ -3,7 +3,11 @@
 A subgraph for indexing and querying historical data related to **SplitPlugin**, enabling users to track their split configurations, executions, and recipient distributions on-chain.  
 
 🔗 **Deployed Subgraph Link:**  
-[https://api.studio.thegraph.com/query/112614/base-split-plugin/0.0.1](https://api.studio.thegraph.com/query/112614/base-split-plugin/0.0.1)  
+[https://api.studio.thegraph.com/query/112614/base-split-plugin/0.0.1](https://api.studio.thegraph.com/query/112614/base-split-plugin/0.0.1) (old one)
+
+New Deployed as base-sepolia doesnt support call handler so it is removed in this deployment 👇
+
+[https://api.studio.thegraph.com/query/112614/base-split-plugin/0.0.1](https://api.studio.thegraph.com/query/112614/base-sepolia-new/0.0.1) 
 
 ## Example Queries
 
